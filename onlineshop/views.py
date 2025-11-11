@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status , generics , filters
+from rest_framework import status , generics , filters , permissions
 from .models import Order ,Product
 from .serializers import OrderSerializer , ProductSerializer
 
@@ -124,6 +124,7 @@ class ProductView(generics.ListCreateAPIView):
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['product_name','category_name']
     ordering_fields = ['price','created_at']
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class ProductRetriveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
